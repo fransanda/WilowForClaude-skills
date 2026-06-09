@@ -123,7 +123,7 @@ These skills create project files:
 | `LESSONS.md` | Auto-improving memory — Claude appends learnings, future sessions read them. |
 | `VISION.md` | Project goals, user workflows, and production-readiness criteria. `/improve` uses this to decide what to fix vs. propose. |
 | `AUDIT.md` | Log of every `/improve` session — what was scanned, fixed, and proposed. |
-| `IMPROVE_CONFIG.md` | Configurable schedule for fix and improvement cycles. |
+| `IMPROVE_CONFIG.md` | Configurable schedule for fix and improvement cycles. See [`templates/IMPROVE_CONFIG.md`](templates/IMPROVE_CONFIG.md) for all options. |
 
 If autonomous-claude-itagents is also installed, additional files appear: `BACKLOG_FUTURE.md`, `BACKLOG_BLOCKED.md`, `REVIEW_QUEUE.md`, and the `.agents/` folder with all specialist agent definitions.
 
@@ -138,7 +138,7 @@ Claude reads these files, follows the rules, and works through the backlog conti
 **What happens:**
 1. You describe what you want to build
 2. Claude silently checks your system for required tools — only tells you about **missing** ones
-3. Claude asks up to 20 comprehensive discovery questions in ONE message — covering features, platform, auth, data, APIs, design, budget, and constraints
+3. Claude asks up to 26 comprehensive discovery questions in ONE message — covering features, platform, auth, data, APIs, design, budget, constraints, and vision
 4. You answer everything in one go
 5. Claude **never asks another question** — it installs missing tools, generates project files, creates a private GitHub repo, and starts coding autonomously
 
