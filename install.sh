@@ -28,7 +28,7 @@ echo "Installing autonomous Claude Code skills..."
 echo ""
 
 INSTALLED=0
-for skill in kickoff autonomy ship; do
+for skill in kickoff autonomy ship improve; do
     SRC="$SOURCE_ROOT/skills/$skill/SKILL.md"
     if [ ! -f "$SRC" ]; then
         echo "  ⚠️  Source not found for /$skill — skipping"
@@ -47,17 +47,18 @@ if [ -n "$TEMP_CLONE" ] && [ -d "$TEMP_CLONE" ]; then
 fi
 
 echo ""
-if [ $INSTALLED -eq 3 ]; then
+if [ $INSTALLED -eq 4 ]; then
     echo "Done! Restart Claude Code, then use:"
     echo "  /kickoff [description]  — start a new project"
     echo "  /autonomy               — add autonomy to existing project"
     echo "  /ship                   — wrap up and prepare for testing"
+    echo "  /improve                — autonomous project improvement loop"
     echo ""
     echo "Also make sure GitHub CLI is installed:"
     echo "  brew install gh   # Mac"
     echo "  gh auth login"
     echo ""
 else
-    echo "⚠️  Installation incomplete: $INSTALLED of 3 skills installed"
+    echo "⚠️  Installation incomplete: $INSTALLED of 4 skills installed"
     echo ""
 fi

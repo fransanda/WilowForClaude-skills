@@ -52,6 +52,11 @@ Ask up to 20 questions in ONE message to fully understand the project. Cover ALL
 22. Any hard deadlines or priority features that need to ship first?
 23. Anything that should explicitly NOT be included?
 
+**Vision & Workflows:**
+24. What does production-ready mean for this project? (e.g., "all pages work, responsive, fast, secure, tested")
+25. Describe every user workflow end-to-end (e.g., "Sign up → verify email → browse → purchase → get confirmation")
+26. Any design principles or taste preferences? (e.g., "minimal", "dark mode", "mobile-first")
+
 ### Part B: Tooling Requirements
 
 Based on the project description, think about EVERY tool, service, and integration you will need to build this project. For each one, determine if there is a CLI, API, or MCP server available.
@@ -155,6 +160,7 @@ You are an autonomous developer. Work continuously without human interaction.
 - ALWAYS commit with conventional commits after each task
 - ALWAYS keep working until BACKLOG.md is fully complete
 - ALWAYS read LESSONS.md at session start to apply prior learnings
+- ALWAYS check for PAUSE.md before starting work — if it exists, stop and wait
 
 ### ONLY stop if:
 - You need a credential/secret that doesn't exist
@@ -259,6 +265,80 @@ Use these tags so future reads can filter relevant lessons:
 (empty — fills as work progresses)
 ```
 
+### Step 5b: Create VISION.md
+
+Generate a VISION.md from the user's discovery answers:
+
+```markdown
+# Project Vision
+
+## What this project does
+[synthesized from the user's project description and answers]
+
+## Who it's for
+[from user answers about audience]
+
+## Core user workflows
+1. [Workflow name]: [step] → [step] → [step] → [outcome]
+2. [Workflow name]: [step] → [step] → [outcome]
+(synthesized from answer to question 25, or inferred from features)
+
+## Production-readiness criteria
+- [ ] All user workflows complete and functional
+- [ ] All pages exist and render correctly
+- [ ] Consistent UI: colors, spacing, typography, responsiveness
+- [ ] Backend: auth, validation, error handling on every endpoint
+- [ ] Tests passing: unit, integration, e2e
+- [ ] Security: no hardcoded secrets, parameterized queries, auth on all endpoints
+- [ ] Performance: pages load under 2s, no N+1 queries, optimized images
+- [ ] Dependencies: no known CVEs, all up to date
+- [ ] Accessible: WCAG AA minimum
+[add project-specific criteria from answer 24]
+
+## Design principles
+[from answer 26, or inferred from project type]
+
+## Future direction
+(empty — /improve will populate via PRs)
+```
+
+### Step 5c: Create AUDIT.md and IMPROVE_CONFIG.md
+
+AUDIT.md:
+```markdown
+# Improvement Audit Log
+
+Newest sessions first. Human reviews this to track what agents did.
+
+---
+```
+
+IMPROVE_CONFIG.md:
+```markdown
+# /improve Configuration
+
+## Schedule
+- Fix cycle: every 24h
+- Improvement cycle: every 7d
+
+## Models
+- Orchestration: opus
+- Scanning: sonnet
+- Fix implementation: sonnet
+- Improvement discovery: opus
+- Improvement implementation: sonnet
+- Verification: sonnet
+
+## Last Run
+- Last fix scan: never
+- Last improvement scan: never
+
+## Notes
+- Edit this file to change the schedule, or pass arguments: /improve fixes every 12h improvements every 3d
+- Delete the "Last Run" timestamps to force an immediate scan
+- Models: change any line above to use a different model (opus, sonnet, haiku, or any future model name)
+```
+
 ### Step 6: Create .gitignore
 
 Generate an appropriate .gitignore file based on the tech stack. ALWAYS include these regardless of stack (security-critical):
@@ -274,6 +354,8 @@ secrets.json
 .DS_Store
 .agents/STATE.md
 .agents/LESSONS.md.archive-*
+PAUSE.md
+IMPROVE_CONFIG.md
 ```
 Plus the usual stack-specific entries (`node_modules/`, `__pycache__/`, `dist/`, `build/`, `.next/`, etc.).
 
@@ -340,7 +422,7 @@ Commit the setup files first:
 
 ```bash
 git add -A
-git commit -m "chore: initialize project with CLAUDE.md, BACKLOG.md, PROGRESS.md, LESSONS.md"
+git commit -m "chore: initialize project with CLAUDE.md, BACKLOG.md, PROGRESS.md, LESSONS.md, VISION.md"
 git branch -M main
 ```
 

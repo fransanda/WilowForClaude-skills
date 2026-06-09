@@ -1,6 +1,6 @@
 # 🤖 Autonomous Claude Code Skills
 
-**Three slash commands that turn Claude Code into a fully autonomous developer.**
+**Four slash commands that turn Claude Code into a fully autonomous developer.**
 
 Claude Code is powerful, but by default it stops after every task to ask "what next?" and pauses mid-work to ask "is this plan okay?" These skills eliminate both problems. Claude works continuously through a backlog, makes all technical decisions itself, and only stops when it genuinely needs human input (API keys, paid services, etc.).
 
@@ -14,13 +14,16 @@ Claude Code is powerful, but by default it stops after every task to ask "what n
 |---|---|---|
 | `/kickoff [description]` | Start a **new project** from an empty folder | You have an idea, no code yet |
 | `/autonomy` | Add autonomous mode to an **existing project** | You have code, want Claude to keep building |
+| `/improve` | **Autonomous improvement loop** — fixes bugs & gaps on main, proposes new features via PRs | You want to push toward production or maintain a live project |
 | `/ship` or `/ship [minutes]` | Wrap up, make sure it runs, prepare for testing | You want to test what Claude built |
 
 Every new project kicked off with `/kickoff` or adopted via `/autonomy` automatically gets:
 - A private GitHub repo (via `gh` CLI)
-- `CLAUDE.md`, `BACKLOG.md`, `PROGRESS.md`, `LESSONS.md` setup
+- `CLAUDE.md`, `BACKLOG.md`, `PROGRESS.md`, `LESSONS.md`, `VISION.md` setup
 - A baked-in **🔒 Security Defaults** block (private by default, env vars for secrets, auth on every endpoint, parameterized queries, input validation, hashed passwords, HTTPS, least-privilege access) that Claude follows throughout development
+- **`VISION.md`** — project goals, user workflows, and production-readiness criteria. Used by `/improve` to know what to fix vs. what to propose.
 - **`LESSONS.md` auto-improving memory** — Claude appends learnings, future sessions read them. Per-project, no extra cost.
+- **`AUDIT.md`** — tracks every `/improve` session: what was scanned, fixed, and proposed.
 - If [autonomous-claude-itagents](https://github.com/fransanda/autonomous-claude-itagents) is also installed → full multi-agent QA pipeline activates automatically
 
 ---
@@ -110,7 +113,7 @@ By default, Claude Code has behaviors that prevent truly autonomous work:
 
 ### The Solution
 
-These skills create four files in every project:
+These skills create project files:
 
 | File | Purpose |
 |---|---|
@@ -118,6 +121,9 @@ These skills create four files in every project:
 | `BACKLOG.md` | A checkboxed task list. Claude picks the next unchecked item, builds it, checks it off, moves to the next. |
 | `PROGRESS.md` | State file so Claude can resume where it left off if the session restarts. |
 | `LESSONS.md` | Auto-improving memory — Claude appends learnings, future sessions read them. |
+| `VISION.md` | Project goals, user workflows, and production-readiness criteria. `/improve` uses this to decide what to fix vs. propose. |
+| `AUDIT.md` | Log of every `/improve` session — what was scanned, fixed, and proposed. |
+| `IMPROVE_CONFIG.md` | Configurable schedule for fix and improvement cycles. |
 
 If autonomous-claude-itagents is also installed, additional files appear: `BACKLOG_FUTURE.md`, `BACKLOG_BLOCKED.md`, `REVIEW_QUEUE.md`, and the `.agents/` folder with all specialist agent definitions.
 
@@ -151,6 +157,37 @@ If autonomous-claude-itagents is detected, the project is set up with the full m
 6. Claude creates PROGRESS.md and LESSONS.md and starts working
 
 If autonomous-claude-itagents is detected, the existing project is retrofitted with the agent system files.
+
+---
+
+### 🔄 `/improve` — Autonomous Improvement Loop
+
+**What happens:**
+1. Claude reads `VISION.md` (creates it if missing — asks 5 questions once, then never again)
+2. Scans the entire project against VISION.md: workflows, bugs, security, performance, UI consistency, backend robustness
+3. Categorizes findings into **fixes** (autonomous) and **improvements** (needs approval):
+   - 🔧 **Fixes** — anything VISION.md says should work but doesn't → committed directly to `main`
+   - 💡 **Improvements** — new features or changes not in VISION.md → created on branches as PR drafts for human review
+4. Fixes are applied, tests run, regressions caught via convergence re-scans
+5. Everything is logged to `AUDIT.md`
+6. Cycle repeats on a configurable schedule
+
+**Configurable timing:**
+```
+/improve                                        # defaults: fixes every 24h, improvements every 7d
+/improve fixes every 12h                        # more frequent fix scans
+/improve improvements every 3d                  # more frequent improvement proposals
+/improve fixes every 6h improvements every 1d   # aggressive (active development)
+```
+
+Edit `IMPROVE_CONFIG.md` at any time to change the schedule.
+
+**Controls:**
+- Create `PAUSE.md` to pause (write a reason inside) — delete it to resume
+- Close the Claude Code session to stop entirely
+- Use `/loop /improve` for continuous operation within a session
+
+If autonomous-claude-itagents is detected, `/improve` leverages the specialist agents (security-analyzer, bug-finder, etc.) for deeper scanning.
 
 ---
 
@@ -196,10 +233,12 @@ You're always in control. Just type in the terminal at any moment — Claude pau
 | Skip a task | `"Skip the email feature, we don't need it"` |
 | Add a task | `"Add to the backlog: implement dark mode"` |
 | Fix something NOW | `"Stop. Fix this bug first: signup crashes when email is empty"` |
-| Pause Claude | `"Stop working. Wait for me."` |
-| Resume | `"Resume the backlog."` |
+| Pause Claude | `"Stop working. Wait for me."` or create `PAUSE.md` |
+| Resume | `"Resume the backlog."` or delete `PAUSE.md` |
 | Check status | `"What are you working on? What's left?"` |
 | Free up memory | `/compact` |
+| Improve the project | `/improve` (scan, fix, propose improvements) |
+| Change improve frequency | `/improve fixes every 12h improvements every 3d` |
 | Wrap up for testing | `/ship` |
 | Run multi-agent review | `/itagentsreview` (requires autonomous-claude-itagents) |
 
@@ -287,6 +326,9 @@ Each session works independently through its own BACKLOG.md.
 | Session dies completely | Relaunch Claude, type: *"Read PROGRESS.md and BACKLOG.md. Continue where you left off."* |
 | GitHub repo not created | Install GitHub CLI: `winget install GitHub.cli` (Windows) or `brew install gh` (Mac), then `gh auth login` |
 | `gh` installed but repo still not created | Run `gh auth login` — CLI is installed but not authenticated |
+| `/improve` finds nothing to fix | Check `VISION.md` — it may be missing workflows. Add the user flows you expect and run `/improve` again |
+| `/improve` keeps proposing the same PRs | Close the existing PR (or merge it). `/improve` skips improvements that already have an open branch |
+| Want to change improve schedule | Edit `IMPROVE_CONFIG.md` in your project, or run `/improve fixes every Xh improvements every Xd` |
 | Want the multi-agent review pipeline | Install [autonomous-claude-itagents](https://github.com/fransanda/autonomous-claude-itagents), then re-run `/autonomy` in your project |
 
 ---
@@ -295,12 +337,12 @@ Each session works independently through its own BACKLOG.md.
 
 ### Windows
 ```powershell
-foreach ($d in @("$env:USERPROFILE\.claude\skills","$env:USERPROFILE\.agents\skills")) { foreach ($s in @("kickoff","autonomy","ship")) { Remove-Item "$d\$s" -Recurse -Force -ErrorAction SilentlyContinue } }
+foreach ($d in @("$env:USERPROFILE\.claude\skills","$env:USERPROFILE\.agents\skills")) { foreach ($s in @("kickoff","autonomy","ship","improve")) { Remove-Item "$d\$s" -Recurse -Force -ErrorAction SilentlyContinue } }
 ```
 
 ### Mac / Linux
 ```bash
-for d in ~/.claude/skills ~/.agents/skills; do rm -rf "$d/kickoff" "$d/autonomy" "$d/ship"; done
+for d in ~/.claude/skills ~/.agents/skills; do rm -rf "$d/kickoff" "$d/autonomy" "$d/ship" "$d/improve"; done
 ```
 
 ---
@@ -313,6 +355,20 @@ MIT — use however you want.
 
 Ideas, improvements, and new skills welcome. Open an issue or PR.
 
+## Full project lifecycle
+
+```
+/kickoff [idea]     → Build from scratch (questions → backlog → autonomous build)
+        ↓
+/improve            → Push to production (fix bugs/gaps → propose enhancements via PRs)
+        ↓
+/itagentsreview     → Deep multi-agent QA review (optional, requires itagents)
+        ↓
+/ship               → Wrap up, verify, test report
+        ↓
+/improve            → Maintain (periodic scans, fixes, improvement PRs)
+```
+
 ## Sister project
 
-[autonomous-claude-itagents](https://github.com/fransanda/autonomous-claude-itagents) — adds a 9-agent QA pipeline (Coordinator, Builder, Code Reviewer, Bug Finder, Security Analyzer, Performance Optimizer, Dependency Auditor, Tester, Task Checker) on top of these skills. Auto-detected.
+[autonomous-claude-itagents](https://github.com/fransanda/autonomous-claude-itagents) — adds a 9-agent QA pipeline (Coordinator, Builder, Code Reviewer, Bug Finder, Security Analyzer, Performance Optimizer, Dependency Auditor, Tester, Task Checker) on top of these skills. Auto-detected. `/improve` leverages these agents for deeper scanning when installed.

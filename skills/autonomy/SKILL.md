@@ -113,7 +113,7 @@ fi
 
 Replace `PROJECT_DESCRIPTION_HERE` with a real one-line description from the codebase analysis.
 
-Also verify the .gitignore includes `.env`, `*.key`, `*.pem`, `credentials.json`, `.agents/STATE.md`, `.agents/LESSONS.md.archive-*` and other secret-bearing files. Add them if missing.
+Also verify the .gitignore includes `.env`, `*.key`, `*.pem`, `credentials.json`, `.agents/STATE.md`, `.agents/LESSONS.md.archive-*`, `PAUSE.md`, `IMPROVE_CONFIG.md` and other secret-bearing or local control files. Add them if missing.
 
 ## Step 5: Update or create CLAUDE.md
 
@@ -145,6 +145,7 @@ You are an autonomous developer. Work continuously without human interaction.
 - ALWAYS commit with conventional commits after each task
 - ALWAYS keep working until BACKLOG.md is fully complete
 - ALWAYS read LESSONS.md at session start to apply prior learnings
+- ALWAYS check for PAUSE.md before starting work — if it exists, stop and wait
 
 ### ONLY stop if:
 - You need a credential/secret that doesn't exist
@@ -224,6 +225,81 @@ EOF
 
 If `ITAGENTS_AVAILABLE=0`, skip this step. The project runs in solo mode.
 
+### Step 6b: Create VISION.md (if not exists)
+
+If VISION.md does not already exist, generate one by analyzing the codebase:
+
+```markdown
+# Project Vision
+
+## What this project does
+[inferred from CLAUDE.md, README, package.json description, or code structure]
+
+## Who it's for
+[inferred from the project type and features]
+
+## Core user workflows
+[analyze routes/pages/screens to map out every user workflow end-to-end]
+1. [Workflow name]: [step] → [step] → [step] → [outcome]
+2. [Workflow name]: [step] → [step] → [outcome]
+
+## Production-readiness criteria
+- [ ] All user workflows complete and functional
+- [ ] All pages exist and render correctly
+- [ ] Consistent UI: colors, spacing, typography, responsiveness
+- [ ] Backend: auth, validation, error handling on every endpoint
+- [ ] Tests passing: unit, integration, e2e
+- [ ] Security: no hardcoded secrets, parameterized queries, auth on all endpoints
+- [ ] Performance: pages load under 2s, no N+1 queries, optimized images
+- [ ] Dependencies: no known CVEs, all up to date
+- [ ] Accessible: WCAG AA minimum
+
+## Design principles
+[inferred from existing code patterns, UI framework choices, existing styles]
+
+## Future direction
+(empty — /improve will populate via PRs)
+```
+
+If VISION.md already exists, leave it as-is.
+
+### Step 6c: Create AUDIT.md and IMPROVE_CONFIG.md (if not exist)
+
+AUDIT.md (if not exists):
+```markdown
+# Improvement Audit Log
+
+Newest sessions first. Human reviews this to track what agents did.
+
+---
+```
+
+IMPROVE_CONFIG.md (if not exists):
+```markdown
+# /improve Configuration
+
+## Schedule
+- Fix cycle: every 24h
+- Improvement cycle: every 7d
+
+## Models
+- Orchestration: opus
+- Scanning: sonnet
+- Fix implementation: sonnet
+- Improvement discovery: opus
+- Improvement implementation: sonnet
+- Verification: sonnet
+
+## Last Run
+- Last fix scan: never
+- Last improvement scan: never
+
+## Notes
+- Edit this file to change the schedule, or pass arguments: /improve fixes every 12h improvements every 3d
+- Delete the "Last Run" timestamps to force an immediate scan
+- Models: change any line above to use a different model (opus, sonnet, haiku, or any future model name)
+```
+
 ## Step 7: Generate BACKLOG.md
 
 Scan the entire codebase and create BACKLOG.md with checkboxed tasks organized by priority:
@@ -278,7 +354,7 @@ Future sessions read this file before working. Append findings with format:
 ## Step 9: Commit and push
 
 ```bash
-git add CLAUDE.md BACKLOG.md PROGRESS.md LESSONS.md .gitignore
+git add CLAUDE.md BACKLOG.md PROGRESS.md LESSONS.md VISION.md AUDIT.md IMPROVE_CONFIG.md .gitignore
 if [ -d .agents ]; then
     git add .agents/ BACKLOG_FUTURE.md BACKLOG_BLOCKED.md REVIEW_QUEUE.md 2>/dev/null || true
 fi

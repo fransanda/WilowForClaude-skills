@@ -30,7 +30,7 @@ Write-Host "Installing autonomous Claude Code skills..." -ForegroundColor Cyan
 Write-Host ""
 
 $installed = @()
-foreach ($skill in @("kickoff", "autonomy", "ship")) {
+foreach ($skill in @("kickoff", "autonomy", "ship", "improve")) {
     $source = Join-Path $sourceRoot "skills\$skill\SKILL.md"
     if (-not (Test-Path $source)) {
         Write-Host "  Source not found for /$skill — skipping" -ForegroundColor Yellow
@@ -50,11 +50,12 @@ if ($tempClone -and (Test-Path $tempClone)) {
 }
 
 Write-Host ""
-if ($installed.Count -eq 3) {
+if ($installed.Count -eq 4) {
     Write-Host "Done! Restart Claude Code, then use:" -ForegroundColor Green
     Write-Host "  /kickoff [description]  — start a new project" -ForegroundColor White
     Write-Host "  /autonomy               — add autonomy to existing project" -ForegroundColor White
     Write-Host "  /ship                   — wrap up and prepare for testing" -ForegroundColor White
+    Write-Host "  /improve                — autonomous project improvement loop" -ForegroundColor White
     Write-Host ""
     Write-Host "Also make sure GitHub CLI is installed:" -ForegroundColor Gray
     Write-Host "  winget install GitHub.cli" -ForegroundColor Gray
