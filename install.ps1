@@ -1,4 +1,4 @@
-# install.ps1 — Install autonomous Claude Code skills
+﻿# install.ps1 — Install autonomous Claude Code skills
 # Remote install: irm https://raw.githubusercontent.com/fransanda/autonomous-claude-skills/main/install.ps1 | iex
 # Local install:  .\install.ps1 (from inside a cloned repo)
 
