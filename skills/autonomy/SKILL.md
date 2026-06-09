@@ -113,7 +113,7 @@ fi
 
 Replace `PROJECT_DESCRIPTION_HERE` with a real one-line description from the codebase analysis.
 
-Also verify the .gitignore includes `.env`, `*.key`, `*.pem`, `credentials.json`, `.agents/STATE.md`, `.agents/LESSONS.md.archive-*`, `PAUSE.md` and other secret-bearing or local control files. Add them if missing. (IMPROVE_CONFIG.md is intentionally NOT gitignored — it gets committed so its schedule and timestamps persist.)
+Also verify the .gitignore includes `.env`, `*.key`, `*.pem`, `credentials.json`, `.agents/STATE.md`, `.agents/LESSONS.md.archive-*`, `PAUSE.md`, `IMPROVE_CONFIG.md` and other secret-bearing or local control files. Add them if missing. (IMPROVE_CONFIG.md is machine-local; the committed placeholder for collaborators is IMPROVE_CONFIG.example.md — see Step 6c. NEVER `git add IMPROVE_CONFIG.md` — it's ignored and the add will error.)
 
 ## Step 5: Update or create CLAUDE.md
 
@@ -309,6 +309,8 @@ IMPROVE_CONFIG.md (if not exists):
 - Set "Auto-merge after /improve: yes" to auto-merge pending improve/* PRs each cycle (requires autonomous-claude-itagents)
 ```
 
+Also create `IMPROVE_CONFIG.example.md` (if not exists) with the exact same content. The real IMPROVE_CONFIG.md is gitignored (machine-local schedule + timestamps); the .example.md placeholder IS committed, so collaborators who clone the repo get the defaults — /improve copies it to IMPROVE_CONFIG.md automatically on first run.
+
 ## Step 7: Generate BACKLOG.md
 
 Scan the entire codebase and create BACKLOG.md with checkboxed tasks organized by priority:
@@ -363,7 +365,7 @@ Future sessions read this file before working. Append findings with format:
 ## Step 9: Commit and push
 
 ```bash
-git add CLAUDE.md BACKLOG.md PROGRESS.md LESSONS.md VISION.md AUDIT.md IMPROVE_CONFIG.md .gitignore
+git add CLAUDE.md BACKLOG.md PROGRESS.md LESSONS.md VISION.md AUDIT.md IMPROVE_CONFIG.example.md .gitignore
 if [ -d .agents ]; then
     git add .agents/ BACKLOG_FUTURE.md BACKLOG_BLOCKED.md REVIEW_QUEUE.md 2>/dev/null || true
 fi

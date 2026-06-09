@@ -123,7 +123,7 @@ These skills create project files:
 | `LESSONS.md` | Auto-improving memory — Claude appends learnings, future sessions read them. |
 | `VISION.md` | Project goals, user workflows, and production-readiness criteria. `/improve` uses this to decide what to fix vs. propose. |
 | `AUDIT.md` | Log of every `/improve` session — what was scanned, fixed, and proposed. |
-| `IMPROVE_CONFIG.md` | Configurable schedule for fix and improvement cycles. See [`templates/IMPROVE_CONFIG.md`](templates/IMPROVE_CONFIG.md) for all options. |
+| `IMPROVE_CONFIG.md` | Configurable schedule for fix and improvement cycles. Gitignored (machine-local); a committed `IMPROVE_CONFIG.example.md` placeholder gives collaborators the defaults. See [`templates/IMPROVE_CONFIG.md`](templates/IMPROVE_CONFIG.md) for all options. |
 
 If autonomous-claude-itagents is also installed, additional files appear: `BACKLOG_FUTURE.md`, `BACKLOG_BLOCKED.md`, `REVIEW_QUEUE.md`, and the `.agents/` folder with all specialist agent definitions.
 

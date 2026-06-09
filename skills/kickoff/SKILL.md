@@ -345,6 +345,8 @@ IMPROVE_CONFIG.md:
 - Set "Auto-merge after /improve: yes" to auto-merge pending improve/* PRs each cycle (requires autonomous-claude-itagents)
 ```
 
+Also create `IMPROVE_CONFIG.example.md` with the exact same content. The real IMPROVE_CONFIG.md is gitignored (machine-local schedule + timestamps); the .example.md placeholder IS committed, so collaborators who clone the repo get the defaults — /improve copies it to IMPROVE_CONFIG.md automatically on first run.
+
 ### Step 6: Create .gitignore
 
 Generate an appropriate .gitignore file based on the tech stack. ALWAYS include these regardless of stack (security-critical):
@@ -361,9 +363,10 @@ secrets.json
 .agents/STATE.md
 .agents/LESSONS.md.archive-*
 PAUSE.md
+IMPROVE_CONFIG.md
 ```
 
-(IMPROVE_CONFIG.md is intentionally NOT gitignored — /improve commits its timestamps after each cycle.)
+(IMPROVE_CONFIG.md is machine-local — its schedule and Last Run timestamps belong to each machine. The committed placeholder is IMPROVE_CONFIG.example.md, created in Step 5c. NEVER `git add IMPROVE_CONFIG.md` — it's ignored and the add will error.)
 Plus the usual stack-specific entries (`node_modules/`, `__pycache__/`, `dist/`, `build/`, `.next/`, etc.).
 
 ### Step 7: Set up the multi-agent QA pipeline (if available)

@@ -3,6 +3,11 @@
 This file is generated automatically by `/kickoff`, `/autonomy`, or `/improve` inside each project.
 Edit it to customize how `/improve` behaves for that project.
 
+Note: inside each project, `IMPROVE_CONFIG.md` is **gitignored** (machine-local schedule and
+"Last Run" timestamps). A committed placeholder `IMPROVE_CONFIG.example.md` with the defaults is
+generated alongside it — collaborators who clone the project get the example, and `/improve`
+copies it to `IMPROVE_CONFIG.md` automatically on first run.
+
 ## Schedule
 - Fix cycle: every 24h
 - Improvement cycle: every 7d

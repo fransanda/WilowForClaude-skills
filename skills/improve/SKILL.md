@@ -102,7 +102,9 @@ Commit VISION.md: `docs: add project vision`
 
 ### 3. Read or create IMPROVE_CONFIG.md
 
-If it doesn't exist, create it with defaults (or overrides from arguments):
+IMPROVE_CONFIG.md is machine-local (gitignored). If it doesn't exist:
+- If a committed `IMPROVE_CONFIG.example.md` exists, copy it to IMPROVE_CONFIG.md (this is how collaborators who just cloned the repo get the project's defaults)
+- Otherwise create it with the defaults below (or overrides from arguments), and ALSO create `IMPROVE_CONFIG.example.md` with the same content so it gets committed for collaborators:
 ```markdown
 # /improve Configuration
 
@@ -493,10 +495,12 @@ Append any patterns worth remembering:
 
 ### Commit the state files
 ```bash
-git add AUDIT.md LESSONS.md IMPROVE_CONFIG.md VISION.md PROGRESS.md 2>/dev/null || true
+git add AUDIT.md LESSONS.md VISION.md PROGRESS.md 2>/dev/null || true
 git commit -m "docs: /improve session — X fixes, Y PRs proposed" || echo "Nothing to commit"
 git push || echo "Push failed (offline?) — will push next cycle"
 ```
+
+(Do NOT `git add IMPROVE_CONFIG.md` — it is gitignored and machine-local. Its timestamps stay on this machine only.)
 
 ---
 
