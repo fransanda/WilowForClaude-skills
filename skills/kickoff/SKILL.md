@@ -354,10 +354,20 @@ pages:
       "<Visible CTA label>": <dest>
       back: <page-id|none>       # reserved: back affordance; `none` = intentional forced step
       submit:                    # reserved: form outcome — use the map form only when it branches
-        on_success: <dest>
+        enabled_when: "<cond>"   # optional — gated CTA (e.g. "form valid AND terms accepted"); omit unless the gate is real
+        on_success: <dest>       # page/component/self/none — OR a message-id (stay on page + success toast)
         on_error: <message-id>
-    form:                        # optional — only when validation matters
-      fields: [{ name: <f>, required: true, format: email }]
+    form:                        # optional — declare ONLY app-specific intent (not every field)
+      prefill: true              # edit forms only: fields must come up POPULATED (omit for create forms)
+      autosave: true             # omit unless the form has NO submit button (prevents false "missing submit")
+      rules: ["confirm = password", "end_date > start_date"]   # cross-field constraints the tester tries to violate
+      fields:
+        - name: <f>
+          type: email            # text|email|password|number|tel|url|date|select|radio|checkbox|toggle|file|textarea
+          required: true         # enforced ONLY while visible (see show_when)
+          format: email          # + optional min/max/pattern — only for non-obvious rules (e.g. password policy)
+          options: [<a>, <b>]    # select/radio only — the valid choice set
+          show_when: "<field>=<val>"   # conditional visibility; a hidden field never blocks submit
     states:                      # optional — only the SPECIFIC expected content (UI Stack)
       empty: { text: "<copy>", cta: "<label> -> <dest>" }
       error: { text: "<copy>" }

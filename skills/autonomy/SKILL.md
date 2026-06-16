@@ -321,8 +321,14 @@ pages:
     actions:                     # control label -> destination (page id | component id | self | none | "external: <name> -> <page>")
       "<Visible CTA label>": <dest>
       back: <page-id|none>       # reserved: back affordance; `none` = intentional forced step
-      submit: { on_success: <dest>, on_error: <message-id> }   # reserved: branched form outcome
-    form: { fields: [{ name: <f>, required: true, format: email }] }   # optional, when validation matters
+      submit: { enabled_when: "<cond>", on_success: <dest>, on_error: <message-id> }   # reserved: branched form outcome; enabled_when = optional gated CTA; on_success may be a message-id (stay + toast)
+    form:                        # optional — declare ONLY app-specific intent
+      prefill: true              # edit forms: fields come up POPULATED. autosave: true if the form has no submit button.
+      rules: ["confirm = password"]    # cross-field constraints the tester tries to violate
+      fields:
+        - { name: <f>, type: email, required: true, format: email, options: [<a>, <b>], show_when: "<field>=<val>" }
+        # type: text|email|password|number|tel|url|date|select|radio|checkbox|toggle|file|textarea; required enforced only while visible;
+        # format/min/max/pattern only for non-obvious rules; options for select/radio; show_when = conditional visibility
     states:                      # optional — only the SPECIFIC expected content (UI Stack)
       empty: { text: "<copy>", cta: "<label> -> <dest>" }
       error: { text: "<copy>" }

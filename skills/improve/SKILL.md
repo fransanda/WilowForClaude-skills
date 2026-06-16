@@ -159,7 +159,9 @@ routes/components — the absence of a UI map is itself a gap to close. Use thes
 format matches what `/uitest` expects: `meta` (with `has_ui`), `navigation` (nav shells), `pages` (each with
 `route`, `auth`, `roles`, `shell`, and an `actions` map of control-label → destination — reserved keys
 `back: <page|none>` and `submit: {on_success, on_error}`; destinations are a page id / component id / `self`
-/ `none` / `external: <name> -> <page>`), optional `form`/`states` per page, `journeys` (page-id sequences),
+/ `none` / `external: <name> -> <page>`; `submit.enabled_when` gates a CTA, `on_success` may be a message-id),
+optional `form` per page (fields carry `type`/`required`/`show_when`/`options`/`format`; form-level `rules`/`prefill`/`autosave`)
+and `states`, `journeys` (page-id sequences),
 `components` (sheets/modals with `dismiss`), and `messages`. If an existing project already has one, follow
 its style.
 
@@ -225,7 +227,9 @@ The wireframe is the declared intent; the running app must match it. Check, and 
   drags/dismisses, not scrolls the page behind it)? Does each `back: <dest>` page have a working back? (`back:
   none` = intentional, not a gap.)
 - **Form outcomes** — does an invalid submit show the declared `on_error` and stay put; a valid one reach
-  `on_success`?
+  `on_success` (a page, or a stay-put success message)? Do `show_when` fields reveal only when their condition
+  holds (and stay non-blocking while hidden), do `enabled_when` CTAs unlock only when satisfied, does each
+  `rules` cross-field constraint block a violating submit, and does a `prefill:true` edit form load populated?
 - **States** — do declared `states.empty/error` render their content; and (universal) does every data screen
   handle loading/empty/error at all (no infinite spinner / blank / crash)?
 - **Drift** — routes in code missing from the wireframe, or wireframe pages missing from code. Reconcile:
@@ -307,7 +311,9 @@ A finding is a FIX if:
 - VISION.md describes a workflow/feature/criterion and the code doesn't deliver it
 - **WIREFRAME.yaml declares a flow/destination/auth-gate/affordance/state and the app doesn't deliver it**
   (e.g. a CTA reaches the wrong page, an `auth: true` page is reachable logged-out, a declared sheet doesn't
-  dismiss, a declared `back` is missing, an invalid submit doesn't show its `on_error`)
+  dismiss, a declared `back` is missing, an invalid submit doesn't show its `on_error`, a `show_when` field
+  never reveals or a hidden required field blocks submit, an `enabled_when` CTA is greyed forever, a `rules`
+  cross-field constraint isn't enforced, or a `prefill` edit form loads blank)
 - **VISION.md implies accounts/roles but the app has no working login/signup, or a CTA bypasses it** (missing
   auth boundary)
 - A test fails
