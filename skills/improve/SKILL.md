@@ -26,7 +26,7 @@ Check $ARGUMENTS for timing overrides. Accepted formats:
 - `fixes every 12h` — set fix cycle interval (h=hours, d=days)
 - `improvements every 3d` — set improvement cycle interval
 - Both can appear together: `fixes every 6h improvements every 1d`
-- Minimums: fixes 1h, improvements 1d
+- Minimums: fixes 1h, improvements 1h
 - If no timing args: use defaults from IMPROVE_CONFIG.md (or 24h fixes / 7d improvements if no config exists)
 
 If timing args are present, update IMPROVE_CONFIG.md with the new values.
