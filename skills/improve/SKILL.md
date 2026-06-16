@@ -154,8 +154,14 @@ Newest sessions first. Human reviews this to track what agents did.
 Read: CLAUDE.md, PROGRESS.md, LESSONS.md, BACKLOG.md (if exists), and **WIREFRAME.yaml** (if exists).
 `WIREFRAME.yaml` is the UI source of truth — its declared pages/auth/flows/components/states are part of
 "what should work," so a gap between it and the running app is a FIX, exactly like a VISION.md gap.
-If `WIREFRAME.yaml` is missing but the project has a UI, create it this cycle (reverse-engineer it from
-the routes/components, same as `/autonomy` Step 6b2) — the absence of a UI map is itself a gap to close.
+If `WIREFRAME.yaml` is missing but the project has a UI, create it this cycle by reverse-engineering the
+routes/components — the absence of a UI map is itself a gap to close. Use these top-level sections so the
+format matches what `/uitest` expects: `meta` (with `has_ui`), `navigation` (nav shells), `pages` (each with
+`route`, `auth`, `roles`, `shell`, and an `actions` map of control-label → destination — reserved keys
+`back: <page|none>` and `submit: {on_success, on_error}`; destinations are a page id / component id / `self`
+/ `none` / `external: <name> -> <page>`), optional `form`/`states` per page, `journeys` (page-id sequences),
+`components` (sheets/modals with `dismiss`), and `messages`. If an existing project already has one, follow
+its style.
 
 ### 6. Detect itagents
 
@@ -225,10 +231,15 @@ The wireframe is the declared intent; the running app must match it. Check, and 
 - **Drift** — routes in code missing from the wireframe, or wireframe pages missing from code. Reconcile:
   if the *code* is right, update the wireframe (free, no approval); if the *intent* is right, fix the code.
 
-If **itagents is available and the project has a UI**, run the UI checks for real by deploying the
-`/uitest` army (or the `ui-tester` agent) against the declared flows/journeys — passing it `WIREFRAME.yaml`
-as the answer key — and fold its Critical/High flaws into the FIX list. If itagents is not present, do the
-above as a static code+route analysis.
+Do these as **static code + route analysis** — read the router, the components, the auth guards, and the
+form handlers and reason about whether each declared flow/auth-gate/affordance/state is actually delivered.
+That is the baseline and always runs (it's all `/improve` needs Read/Grep/Bash for). Where a check genuinely
+can't be settled from the code (e.g. does the bottom sheet *visually* drag-to-dismiss, does the empty state
+*render*), don't guess — add a `[ui-fix]` fix item noting it needs a runtime check, and let the live-browser
+army settle it: that runs via `/uitest` (standalone) or the Coordinator inside `/itagentsreview`, both of
+which already pass `WIREFRAME.yaml` to the testers. If `Auto-merge`/itagents flows aren't set up, the static
+analysis above still catches the structural cases (missing login route, a CTA whose `href`/handler targets
+the wrong page, an unguarded `auth: true` route).
 
 ### Code quality scan
 - Run the test suite → collect failures
