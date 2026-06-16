@@ -22,7 +22,7 @@ Every new project kicked off with `/kickoff` or adopted via `/autonomy` automati
 - `CLAUDE.md`, `BACKLOG.md`, `PROGRESS.md`, `LESSONS.md`, `VISION.md`, `WIREFRAME.yaml` setup
 - A baked-in **🔒 Security Defaults** block (private by default, env vars for secrets, auth on every endpoint, parameterized queries, input validation, hashed passwords, HTTPS, least-privilege access) that Claude follows throughout development
 - **`VISION.md`** — project goals, user workflows, and production-readiness criteria. Used by `/improve` to know what to fix vs. what to propose.
-- **`WIREFRAME.yaml`** — the UI source of truth (pages, nav, flows, components, states with auth/roles and each CTA's expected destination). `/uitest` and `/improve` check the running app against it to catch broken flows, missing-login gaps, dead drag/back affordances, and missing empty/error states.
+- **`WIREFRAME.yaml`** — the UI source of truth (pages, nav, flows, components, states with auth/roles, each CTA's expected destination, and form intent: which fields are required, conditional-visibility rules, and cross-field validation). `/uitest` and `/improve` check the running app against it to catch broken flows, missing-login gaps, dead drag/back affordances, missing empty/error states, never-revealing conditional fields, and unenforced form rules.
 - **`LESSONS.md` auto-improving memory** — Claude appends learnings, future sessions read them. Per-project, no extra cost.
 - **`AUDIT.md`** — tracks every `/improve` session: what was scanned, fixed, and proposed.
 - If [autonomous-claude-itagents](https://github.com/fransanda/autonomous-claude-itagents) is also installed → full multi-agent QA pipeline activates automatically
