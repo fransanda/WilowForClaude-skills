@@ -417,7 +417,7 @@ ask extra questions.
 ```markdown
 # Brand
 
-> Human-owned brand strategy — set/steer it here; the frontend-designer implements to it.
+> Human-owned brand strategy — set/steer it here; the UI builder implements to it.
 > The visual SPEC (tokens, type, components) lives in DESIGN.md; this is the identity.
 
 ## Product
@@ -452,7 +452,7 @@ ask extra questions.
 ```markdown
 # Design System
 
-> The visual SPEC — owned by the frontend-designer, steerable by the human.
+> The visual SPEC — owned by the agent that builds the UI, steerable by the human.
 > This file is the DECLARED INTENT; the theme config (CSS variables / tailwind.config / theme file) is the
 > IMPLEMENTATION. Keep them in sync — if they disagree, THIS FILE WINS and the code is corrected.
 > /uitest + ui-tester drift-check the rendered UI against these tokens.
