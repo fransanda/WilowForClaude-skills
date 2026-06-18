@@ -151,7 +151,8 @@ Newest sessions first. Human reviews this to track what agents did.
 
 ### 5. Load project context
 
-Read: CLAUDE.md, PROGRESS.md, LESSONS.md, BACKLOG.md (if exists), and **WIREFRAME.yaml** (if exists).
+Read: CLAUDE.md, PROGRESS.md, LESSONS.md, BACKLOG.md (if exists), **WIREFRAME.yaml** (if exists), and
+**DESIGN.md** + **BRAND.md** (if exist — the design source of truth, drift-checked below).
 `WIREFRAME.yaml` is the UI source of truth — its declared pages/auth/flows/components/states are part of
 "what should work," so a gap between it and the running app is a FIX, exactly like a VISION.md gap.
 If `WIREFRAME.yaml` is missing but the project has a UI, create it this cycle by reverse-engineering the
@@ -234,6 +235,11 @@ The wireframe is the declared intent; the running app must match it. Check, and 
   handle loading/empty/error at all (no infinite spinner / blank / crash)?
 - **Drift** — routes in code missing from the wireframe, or wireframe pages missing from code. Reconcile:
   if the *code* is right, update the wireframe (free, no approval); if the *intent* is right, fix the code.
+- **Design-system drift (DESIGN.md)** — if `DESIGN.md` exists, does the theme config (CSS variables /
+  `tailwind.config` / theme file) match its declared tokens, and does the UI use the tokens instead of
+  hardcoded one-off hex/spacing? DESIGN.md is the declared intent and wins: where code diverges (an
+  off-token colour, a magic-number margin, a font not in the scale), that is a FIX. If DESIGN.md itself is
+  stale vs. an intentional code change, update DESIGN.md instead (free, no approval — like the wireframe).
 
 Do these as **static code + route analysis** — read the router, the components, the auth guards, and the
 form handlers and reason about whether each declared flow/auth-gate/affordance/state is actually delivered.
@@ -546,7 +552,7 @@ Append any patterns worth remembering:
 
 ### Commit the state files
 ```bash
-git add AUDIT.md LESSONS.md VISION.md WIREFRAME.yaml PROGRESS.md 2>/dev/null || true
+git add AUDIT.md LESSONS.md VISION.md WIREFRAME.yaml DESIGN.md BRAND.md PROGRESS.md 2>/dev/null || true
 git commit -m "docs: /improve session — X fixes, Y PRs proposed" || echo "Nothing to commit"
 git push || echo "Push failed (offline?) — will push next cycle"
 ```

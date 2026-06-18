@@ -1,6 +1,6 @@
 ---
 name: autonomy
-description: "Add autonomous development to an existing project. Scans the codebase, checks required tooling (CLI/API/MCP), creates a private GitHub repo if needed, adds autonomous rules to CLAUDE.md, generates BACKLOG.md, PROGRESS.md, LESSONS.md, VISION.md, and WIREFRAME.yaml (the UI source of truth, reverse-engineered from the codebase), optionally activates the multi-agent QA pipeline (if autonomous-claude-itagents is installed), then starts working continuously. Use with: /autonomy"
+description: "Add autonomous development to an existing project. Scans the codebase, checks required tooling (CLI/API/MCP), creates a private GitHub repo if needed, adds autonomous rules to CLAUDE.md, generates BACKLOG.md, PROGRESS.md, LESSONS.md, VISION.md, WIREFRAME.yaml (the UI source of truth), and BRAND.md + DESIGN.md (the design source of truth, reverse-engineered from the codebase), optionally activates the multi-agent QA pipeline (if autonomous-claude-itagents is installed), then starts working continuously. Use with: /autonomy"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ---
 
@@ -150,6 +150,7 @@ You are an autonomous developer. Work continuously without human interaction.
 - ALWAYS move to the next BACKLOG.md task immediately after completing one
 - ALWAYS update BACKLOG.md (check the box) and PROGRESS.md after each task
 - ALWAYS keep WIREFRAME.yaml in sync when you add, change, or remove a page, flow, screen, or modal (UI projects) — it is the UI source of truth that /uitest and /improve check the app against; update it freely without being asked
+- ALWAYS keep DESIGN.md in sync with the theme config when you change tokens (colors/type/spacing/radii/etc.); DESIGN.md is the declared intent and wins on disagreement. Update BRAND.md only when brand identity (name/voice/audience/values) actually changes (UI projects)
 - ALWAYS write tests for new code
 - ALWAYS commit with conventional commits after each task
 - ALWAYS keep working until BACKLOG.md is fully complete
@@ -363,6 +364,97 @@ meta: { project: <slug>, has_ui: false }
 # /uitest and /improve read this file as the UI source of truth.
 ```
 
+### Step 6b3: Create BRAND.md and DESIGN.md (the design source of truth) — if not exist
+
+Two committed files declaring the project's visual identity (the *look and feel* WIREFRAME.yaml leaves out).
+Create them **only when `has_ui: true`** and only if absent; for non-UI projects write the one-line stub.
+**Reverse-engineer from the codebase**: read the theme config (CSS variables / `tailwind.config` / theme
+file / design-token module) → DESIGN.md tokens (colors, type, spacing, radii, breakpoints, component
+conventions); read the README / landing copy / `package.json` name + VISION.md (audience, principles) →
+BRAND.md (name, tagline, audience, voice, brand colors). The agent that builds the UI owns them going
+forward; `/uitest` and `/improve` drift-check the rendered UI against DESIGN.md's tokens. Where the current
+code is inconsistent (e.g. five different greys), record the **intended** token set and let `/improve` flag
+the code to fix.
+
+**BRAND.md** — human-owned strategy (the WHO/WHY):
+```markdown
+# Brand
+
+> Human-owned brand strategy — set/steer it here; the frontend-designer implements to it.
+> The visual SPEC (tokens, type, components) lives in DESIGN.md; this is the identity.
+
+## Product
+- Name: <product name>   |   Tagline: <one line>   |   One-liner: <what it is, for whom>
+
+## Audience
+- Primary: <persona>   |   Secondary: <if any>
+
+## Voice & tone
+- Personality: <3–5 adjectives>   |   We sound like: <do>   |   We never sound like: <don't>
+
+## Brand values
+- <value> — <implication>
+
+## Brand colors (identity level — full palette in DESIGN.md)
+- Primary: <name / #hex>   |   Accent: <name / #hex>
+
+## Logo / wordmark
+- <direction, or "none yet">
+```
+
+**DESIGN.md** — the design system (agent-maintained):
+```markdown
+# Design System
+
+> The visual SPEC — owned by the frontend-designer, steerable by the human.
+> DESIGN.md is the DECLARED INTENT; the theme config (CSS variables / tailwind.config / theme file) is the
+> IMPLEMENTATION. Keep them in sync — if they disagree, THIS FILE WINS and the code is corrected.
+> /uitest + ui-tester drift-check the rendered UI against these tokens.
+
+## Color tokens
+| Token | Value | Usage |
+|---|---|---|
+| bg / surface / text / text-muted | <#hex …> | backgrounds + text |
+| primary / accent / border | <#hex …> | actions + structure |
+| success / warning / error | <#hex …> | semantic |
+(+ dark-mode variants if applicable)
+
+## Typography
+- Display: <family>, weights <…>   |   Body: <family>, weights <…>
+- Scale (rem): <12 / 14 / 16 / 20 / 24 / 32 / 48>   |   Line-height: body <…>, headings <…>
+
+## Spacing & layout
+- Spacing scale: <4 / 8 / 12 / 16 / 24 / 32 / 48 / 64>   |   Container max-width <…>; grid <…>
+- Radii <sm / md / lg / full>   |   Elevation <sm / md / lg>
+
+## Breakpoints (mobile-first)
+- mobile <…> / tablet <…> / desktop <…>
+
+## Components (conventions)
+- Buttons: variants <primary / secondary / ghost / destructive>; each has hover/active/focus-visible/disabled
+- Inputs: label + helper + error; visible focus ring
+- Cards / sheets / modals: <conventions> (WIREFRAME.yaml lists which exist + their dismiss/states)
+
+## Motion
+- Durations <fast / base / slow>; easing <…>; honor `prefers-reduced-motion`
+
+## Accessibility
+- WCAG AA contrast; visible focus on every interactive element; full keyboard nav; semantic HTML
+
+## Implementation pointer
+- Tokens live in: <e.g. src/styles/tokens.css | tailwind.config.js | theme.ts>
+```
+
+**If the project has no UI**, write a one-line stub into each instead:
+```markdown
+# Brand
+<!-- No UI yet. If a UI is added, fill this in FIRST — the UI builder implements to it. -->
+```
+```markdown
+# Design System
+<!-- No UI yet. If a UI is added, declare the tokens here FIRST — /uitest drift-checks the app against them. -->
+```
+
 ### Step 6c: Create AUDIT.md and IMPROVE_CONFIG.md (if not exist)
 
 AUDIT.md (if not exists):
@@ -462,7 +554,7 @@ Future sessions read this file before working. Append findings with format:
 ## Step 9: Commit and push
 
 ```bash
-git add CLAUDE.md BACKLOG.md PROGRESS.md LESSONS.md VISION.md WIREFRAME.yaml AUDIT.md IMPROVE_CONFIG.example.md .gitignore
+git add CLAUDE.md BACKLOG.md PROGRESS.md LESSONS.md VISION.md WIREFRAME.yaml BRAND.md DESIGN.md AUDIT.md IMPROVE_CONFIG.example.md .gitignore
 if [ -d .agents ]; then
     git add .agents/ BACKLOG_FUTURE.md BACKLOG_BLOCKED.md REVIEW_QUEUE.md 2>/dev/null || true
 fi

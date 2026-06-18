@@ -1,6 +1,6 @@
 ---
 name: kickoff
-description: "Start a new project from an empty folder. Asks comprehensive discovery questions (up to 26), checks required tooling (CLI/API/MCP), generates CLAUDE.md, BACKLOG.md, PROGRESS.md, LESSONS.md, VISION.md, and WIREFRAME.yaml (the UI source of truth), creates a private GitHub repo, optionally activates the multi-agent QA pipeline (if autonomous-claude-itagents is installed), and starts fully autonomous development. Use with: /kickoff [project description]"
+description: "Start a new project from an empty folder. Asks comprehensive discovery questions (up to 26), checks required tooling (CLI/API/MCP), generates CLAUDE.md, BACKLOG.md, PROGRESS.md, LESSONS.md, VISION.md, WIREFRAME.yaml (the UI source of truth), and BRAND.md + DESIGN.md (the design source of truth, UI projects), creates a private GitHub repo, optionally activates the multi-agent QA pipeline (if autonomous-claude-itagents is installed), and starts fully autonomous development. Use with: /kickoff [project description]"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 argument-hint: [brief project description]
 ---
@@ -163,6 +163,7 @@ You are an autonomous developer. Work continuously without human interaction.
 - ALWAYS move to the next BACKLOG.md task immediately after completing one
 - ALWAYS update BACKLOG.md (check the box) and PROGRESS.md after each task
 - ALWAYS keep WIREFRAME.yaml in sync when you add, change, or remove a page, flow, screen, or modal (UI projects) — it is the UI source of truth that /uitest and /improve check the app against; update it freely without being asked
+- ALWAYS keep DESIGN.md in sync with the theme config when you change tokens (colors/type/spacing/radii/etc.); DESIGN.md is the declared intent and wins on disagreement. Update BRAND.md only when brand identity (name/voice/audience/values) actually changes (UI projects)
 - ALWAYS write tests for new code
 - ALWAYS commit with conventional commits after each task
 - ALWAYS keep working until BACKLOG.md is fully complete
@@ -402,6 +403,113 @@ meta: { project: <slug>, has_ui: false }
 # /uitest and /improve read this file as the UI source of truth.
 ```
 
+### Step 5b3: Create BRAND.md and DESIGN.md (the design source of truth)
+
+Two committed files (NOT gitignored) that declare the project's visual identity. They fill the gap
+WIREFRAME.yaml leaves: WIREFRAME declares UI *structure/behavior*; these declare the *look and feel*.
+Generate them **only when `has_ui: true`**; for non-UI projects write the one-line stub (below).
+The agent that builds the UI owns them (the human steers them); `/uitest` and `/improve` drift-check
+the rendered UI against DESIGN.md's tokens. Synthesize from the discovery answers — audience (Q8/Q9),
+design principles (Q26), domain — and leave placeholders the designer fills on the first UI task; do NOT
+ask extra questions.
+
+**BRAND.md** — human-owned strategy (the WHO/WHY; rarely changes):
+```markdown
+# Brand
+
+> Human-owned brand strategy — set/steer it here; the frontend-designer implements to it.
+> The visual SPEC (tokens, type, components) lives in DESIGN.md; this is the identity.
+
+## Product
+- Name: <product name>
+- Tagline: <one line>
+- One-liner: <what it is, for whom>
+
+## Audience
+- Primary: <persona — who, context, what they need>
+- Secondary: <if any>
+
+## Voice & tone
+- Personality: <3–5 adjectives, e.g. confident, warm, precise>
+- We sound like: <do — short phrasing examples>
+- We never sound like: <don't — anti-examples>
+
+## Brand values
+- <value> — <what it implies for the product>
+
+## Brand colors (identity level — the full token palette is in DESIGN.md)
+- Primary: <name / #hex / meaning>
+- Accent: <name / #hex>
+
+## Logo / wordmark
+- <direction, or "wordmark only" / "none yet">
+
+## Positioning (optional)
+- vs <competitor/alternative>: <how we differ>
+```
+
+**DESIGN.md** — the design system (agent-maintained, evolves with the app):
+```markdown
+# Design System
+
+> The visual SPEC — owned by the frontend-designer, steerable by the human.
+> This file is the DECLARED INTENT; the theme config (CSS variables / tailwind.config / theme file) is the
+> IMPLEMENTATION. Keep them in sync — if they disagree, THIS FILE WINS and the code is corrected.
+> /uitest + ui-tester drift-check the rendered UI against these tokens.
+
+## Color tokens
+| Token | Value | Usage |
+|---|---|---|
+| bg | <#hex> | page background |
+| surface | <#hex> | cards / sheets |
+| text | <#hex> | primary text |
+| text-muted | <#hex> | secondary text |
+| primary | <#hex> | primary actions / brand |
+| accent | <#hex> | highlights |
+| border | <#hex> | dividers / inputs |
+| success / warning / error | <#hex> / <#hex> / <#hex> | semantic |
+(+ dark-mode variants if applicable)
+
+## Typography
+- Display: <font family>, weights <…>
+- Body: <font family>, weights <…>
+- Scale (rem): <12 / 14 / 16 / 20 / 24 / 32 / 48>
+- Line-height: body <…>, headings <…>
+
+## Spacing & layout
+- Spacing scale: <4 / 8 / 12 / 16 / 24 / 32 / 48 / 64>
+- Container max-width: <…>; grid: <…>
+- Radii: <sm / md / lg / full>
+- Elevation / shadows: <sm / md / lg>
+
+## Breakpoints (mobile-first)
+- mobile <…> / tablet <…> / desktop <…>
+
+## Components (conventions)
+- Buttons: variants <primary / secondary / ghost / destructive>; each has hover / active / focus-visible / disabled
+- Inputs: label + helper + error pattern; visible focus ring
+- Cards / sheets / modals: <conventions> (WIREFRAME.yaml lists which exist + their dismiss/states)
+
+## Motion
+- Durations <fast / base / slow>; easing <…>; always honor `prefers-reduced-motion`
+
+## Accessibility
+- WCAG AA contrast on all text; visible focus on every interactive element; full keyboard nav; semantic HTML
+
+## Implementation pointer
+- Tokens live in: <e.g. src/styles/tokens.css | tailwind.config.js | theme.ts>
+```
+
+**If the project has no UI**, write a one-line stub into each instead:
+```markdown
+# Brand
+<!-- No UI yet. If a UI is added, fill this in FIRST — the UI builder implements to it. -->
+```
+```markdown
+# Design System
+<!-- No UI yet. If a UI is added, declare the tokens here FIRST — /uitest drift-checks the app against them. -->
+```
+
 ### Step 5c: Create AUDIT.md and IMPROVE_CONFIG.md
 
 AUDIT.md:
@@ -536,7 +644,7 @@ Commit the setup files first:
 
 ```bash
 git add -A
-git commit -m "chore: initialize project with CLAUDE.md, BACKLOG.md, PROGRESS.md, LESSONS.md, VISION.md, WIREFRAME.yaml"
+git commit -m "chore: initialize project with CLAUDE.md, BACKLOG.md, PROGRESS.md, LESSONS.md, VISION.md, WIREFRAME.yaml, BRAND.md, DESIGN.md"
 git branch -M main
 ```
 
