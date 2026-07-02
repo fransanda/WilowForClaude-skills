@@ -4,7 +4,7 @@
 
 Claude Code is powerful, but by default it stops after every task to ask "what next?" and pauses mid-work to ask "is this plan okay?" These skills eliminate both problems. Claude works continuously through a backlog, makes all technical decisions itself, and only stops when it genuinely needs human input (API keys, paid services, etc.).
 
-> 💡 **Want a full QA team reviewing the code Claude writes?** Pair this with [WillowForClaude-itagents](https://github.com/fransanda/WillowForClaude-itagents) — an 11-agent review pipeline (security, bugs, performance, dependencies, tests, architecture, PR merge) plus a live-browser UI testing army (`/uitest`) that clicks through every page/role on desktop + mobile. Runs every task before it ships. Auto-detected when both repos are installed.
+> 💡 **Want a full QA team reviewing the code Claude writes?** Pair this with [WilowForClaude-itagents](https://github.com/fransanda/WilowForClaude-itagents) — an 11-agent review pipeline (security, bugs, performance, dependencies, tests, architecture, PR merge) plus a live-browser UI testing army (`/uitest`) that clicks through every page/role on desktop + mobile. Runs every task before it ships. Auto-detected when both repos are installed.
 
 ---
 
@@ -25,7 +25,7 @@ Every new project kicked off with `/kickoff` or adopted via `/autonomy` automati
 - **`WIREFRAME.yaml`** — the UI source of truth (pages, nav, flows, components, states with auth/roles, each CTA's expected destination, and form intent: which fields are required, conditional-visibility rules, and cross-field validation). `/uitest` and `/improve` check the running app against it to catch broken flows, missing-login gaps, dead drag/back affordances, missing empty/error states, never-revealing conditional fields, and unenforced form rules.
 - **`LESSONS.md` auto-improving memory** — Claude appends learnings, future sessions read them. Per-project, no extra cost.
 - **`AUDIT.md`** — tracks every `/improve` session: what was scanned, fixed, and proposed.
-- If [WillowForClaude-itagents](https://github.com/fransanda/WillowForClaude-itagents) is also installed → full multi-agent QA pipeline activates automatically
+- If [WilowForClaude-itagents](https://github.com/fransanda/WilowForClaude-itagents) is also installed → full multi-agent QA pipeline activates automatically
 
 ---
 
@@ -39,12 +39,12 @@ Every new project kicked off with `/kickoff` or adopted via `/autonomy` automati
 
 ### Windows (PowerShell) — one-liner
 ```powershell
-irm https://raw.githubusercontent.com/fransanda/WillowForClaude-skills/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/fransanda/WilowForClaude-skills/main/install.ps1 | iex
 ```
 
 ### Mac / Linux — one-liner
 ```bash
-curl -fsSL https://raw.githubusercontent.com/fransanda/WillowForClaude-skills/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/fransanda/WilowForClaude-skills/main/install.sh | bash
 ```
 
 Both installers automatically copy skills to **both** `~/.claude/skills/` and `~/.agents/skills/` — Claude Code reads from one or the other depending on your setup.
@@ -55,12 +55,12 @@ After installing this repo, optionally install the companion:
 
 ```bash
 # Mac/Linux
-curl -fsSL https://raw.githubusercontent.com/fransanda/WillowForClaude-itagents/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/fransanda/WilowForClaude-itagents/main/install.sh | bash
 ```
 
 ```powershell
 # Windows
-irm https://raw.githubusercontent.com/fransanda/WillowForClaude-itagents/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/fransanda/WilowForClaude-itagents/main/install.ps1 | iex
 ```
 
 `/kickoff` and `/autonomy` will detect it automatically and activate the agent pipeline on every new project.
@@ -127,7 +127,7 @@ These skills create project files:
 | `AUDIT.md` | Log of every `/improve` session — what was scanned, fixed, and proposed. |
 | `IMPROVE_CONFIG.md` | Configurable schedule for fix and improvement cycles. Gitignored (machine-local); a committed `IMPROVE_CONFIG.example.md` placeholder gives collaborators the defaults. See [`templates/IMPROVE_CONFIG.md`](templates/IMPROVE_CONFIG.md) for all options. |
 
-If WillowForClaude-itagents is also installed, additional files appear: `BACKLOG_FUTURE.md`, `BACKLOG_BLOCKED.md`, `REVIEW_QUEUE.md`, and the `.agents/` folder with all specialist agent definitions.
+If WilowForClaude-itagents is also installed, additional files appear: `BACKLOG_FUTURE.md`, `BACKLOG_BLOCKED.md`, `REVIEW_QUEUE.md`, and the `.agents/` folder with all specialist agent definitions.
 
 Claude reads these files, follows the rules, and works through the backlog continuously — like having a developer who never takes breaks.
 
@@ -144,7 +144,7 @@ Claude reads these files, follows the rules, and works through the backlog conti
 4. You answer everything in one go
 5. Claude **never asks another question** — it installs missing tools, generates project files, creates a private GitHub repo, and starts coding autonomously
 
-If WillowForClaude-itagents is detected, the project is set up with the full multi-agent file structure and Builder pushes finished tasks to `REVIEW_QUEUE.md` instead of `PROGRESS.md` directly.
+If WilowForClaude-itagents is detected, the project is set up with the full multi-agent file structure and Builder pushes finished tasks to `REVIEW_QUEUE.md` instead of `PROGRESS.md` directly.
 
 ---
 
@@ -158,7 +158,7 @@ If WillowForClaude-itagents is detected, the project is set up with the full mul
 5. Claude generates BACKLOG.md by scanning for bugs, missing features, test gaps — and flags security violations (hardcoded secrets, missing auth, SQL injection risks) as P1
 6. Claude creates PROGRESS.md and LESSONS.md and starts working
 
-If WillowForClaude-itagents is detected, the existing project is retrofitted with the agent system files.
+If WilowForClaude-itagents is detected, the existing project is retrofitted with the agent system files.
 
 ---
 
@@ -189,7 +189,7 @@ Edit `IMPROVE_CONFIG.md` at any time to change the schedule.
 - Close the Claude Code session to stop entirely
 - Use `/loop /improve` for continuous operation within a session
 
-If WillowForClaude-itagents is detected, `/improve` leverages the specialist agents (security-analyzer, bug-finder, etc.) for deeper scanning.
+If WilowForClaude-itagents is detected, `/improve` leverages the specialist agents (security-analyzer, bug-finder, etc.) for deeper scanning.
 
 ---
 
@@ -242,7 +242,7 @@ You're always in control. Just type in the terminal at any moment — Claude pau
 | Improve the project | `/improve` (scan, fix, propose improvements) |
 | Change improve frequency | `/improve fixes every 12h improvements every 3d` |
 | Wrap up for testing | `/ship` |
-| Run multi-agent review | `/itagentsreview` (requires WillowForClaude-itagents) |
+| Run multi-agent review | `/itagentsreview` (requires WilowForClaude-itagents) |
 
 ---
 
@@ -331,7 +331,7 @@ Each session works independently through its own BACKLOG.md.
 | `/improve` finds nothing to fix | Check `VISION.md` — it may be missing workflows. Add the user flows you expect and run `/improve` again |
 | `/improve` keeps proposing the same PRs | Close the existing PR (or merge it). `/improve` skips improvements that already have an open branch |
 | Want to change improve schedule | Edit `IMPROVE_CONFIG.md` in your project, or run `/improve fixes every Xh improvements every Xd` |
-| Want the multi-agent review pipeline | Install [WillowForClaude-itagents](https://github.com/fransanda/WillowForClaude-itagents), then re-run `/autonomy` in your project |
+| Want the multi-agent review pipeline | Install [WilowForClaude-itagents](https://github.com/fransanda/WilowForClaude-itagents), then re-run `/autonomy` in your project |
 
 ---
 
@@ -375,4 +375,4 @@ Ideas, improvements, and new skills welcome. Open an issue or PR.
 
 ## Sister project
 
-[WillowForClaude-itagents](https://github.com/fransanda/WillowForClaude-itagents) — adds an 11-agent QA pipeline (Coordinator, Builder, Code Reviewer, Bug Finder, Security Analyzer, Performance Optimizer, Dependency Auditor, Tester, Task Checker, PR Merger, UI Tester) on top of these skills, plus the `/uitest` live-browser UI testing army. Auto-detected. `/improve` leverages these agents for deeper scanning when installed, and optional Phase 5.5 can auto-merge pending improvement PRs via `/mergeprs`.
+[WilowForClaude-itagents](https://github.com/fransanda/WilowForClaude-itagents) — adds an 11-agent QA pipeline (Coordinator, Builder, Code Reviewer, Bug Finder, Security Analyzer, Performance Optimizer, Dependency Auditor, Tester, Task Checker, PR Merger, UI Tester) on top of these skills, plus the `/uitest` live-browser UI testing army. Auto-detected. `/improve` leverages these agents for deeper scanning when installed, and optional Phase 5.5 can auto-merge pending improvement PRs via `/mergeprs`.

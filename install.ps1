@@ -1,5 +1,5 @@
 ﻿# install.ps1 — Install autonomous Claude Code skills
-# Remote install: irm https://raw.githubusercontent.com/fransanda/WillowForClaude-skills/main/install.ps1 | iex
+# Remote install: irm https://raw.githubusercontent.com/fransanda/WilowForClaude-skills/main/install.ps1 | iex
 # Local install:  .\install.ps1 (from inside a cloned repo)
 
 $ErrorActionPreference = "Stop"
@@ -21,9 +21,9 @@ if ($PSScriptRoot -and (Test-Path (Join-Path $PSScriptRoot "skills\kickoff\SKILL
     }
     $tempClone = Join-Path $env:TEMP "_acs_install_$(Get-Random)"
     Write-Host "Fetching skills..." -ForegroundColor Cyan
-    git clone --depth=1 --quiet https://github.com/fransanda/WillowForClaude-skills.git $tempClone
+    git clone --depth=1 --quiet https://github.com/fransanda/WilowForClaude-skills.git $tempClone
     if ($LASTEXITCODE -ne 0) {
-        Write-Host "Error: failed to clone WillowForClaude-skills (network down or repo unavailable)." -ForegroundColor Red
+        Write-Host "Error: failed to clone WilowForClaude-skills (network down or repo unavailable)." -ForegroundColor Red
         if (Test-Path $tempClone) { Remove-Item $tempClone -Recurse -Force }
         return
     }

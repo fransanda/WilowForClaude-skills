@@ -1,6 +1,6 @@
 ---
 name: kickoff
-description: "Start a new project from an empty folder. Asks comprehensive discovery questions (up to 26), checks required tooling (CLI/API/MCP), generates CLAUDE.md, BACKLOG.md, PROGRESS.md, LESSONS.md, VISION.md, WIREFRAME.yaml (the UI source of truth), and BRAND.md + DESIGN.md (the design source of truth, UI projects), creates a private GitHub repo, optionally activates the multi-agent QA pipeline (if WillowForClaude-itagents is installed), and starts fully autonomous development. Use with: /kickoff [project description]"
+description: "Start a new project from an empty folder. Asks comprehensive discovery questions (up to 26), checks required tooling (CLI/API/MCP), generates CLAUDE.md, BACKLOG.md, PROGRESS.md, LESSONS.md, VISION.md, WIREFRAME.yaml (the UI source of truth), and BRAND.md + DESIGN.md (the design source of truth, UI projects), creates a private GitHub repo, optionally activates the multi-agent QA pipeline (if WilowForClaude-itagents is installed), and starts fully autonomous development. Use with: /kickoff [project description]"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 argument-hint: [brief project description]
 ---
@@ -119,7 +119,7 @@ git init
 
 The GitHub repo will be created in Step 6 after the initial commit exists — this avoids issues with empty repos and branch name mismatches.
 
-### Step 2: Detect if WillowForClaude-itagents is installed (multi-agent QA pipeline)
+### Step 2: Detect if WilowForClaude-itagents is installed (multi-agent QA pipeline)
 
 Silently check whether the companion repo's templates are available:
 
@@ -207,7 +207,7 @@ You are NOT required to use these — pick the best tool for the job — but the
 If `ITAGENTS_AVAILABLE=1`, append this BEFORE the `---` separator:
 
 ```
-### 🤖 MULTI-AGENT QA PIPELINE (WillowForClaude-itagents installed)
+### 🤖 MULTI-AGENT QA PIPELINE (WilowForClaude-itagents installed)
 This project uses /itagentsreview for multi-agent code review. After Builder completes a task, it goes to REVIEW_QUEUE.md instead of straight to PROGRESS.md. The Coordinator orchestrates Code Reviewer, Bug Finder, Security Analyzer, Performance Optimizer, Dependency Auditor, Tester, and Task Checker before allowing it into PROGRESS.md.
 
 When building, you ARE the Builder agent. Read .agents/builder.md for your role.
@@ -550,7 +550,7 @@ IMPROVE_CONFIG.md:
 - Edit this file to change the schedule, or pass arguments: /improve fixes every 12h improvements every 3d
 - Delete the "Last Run" timestamps to force an immediate scan
 - Models: change any line above to use a different model (opus, sonnet, haiku, or any future model name)
-- Set "Auto-merge after /improve: yes" to auto-merge pending improve/* PRs each cycle (requires WillowForClaude-itagents)
+- Set "Auto-merge after /improve: yes" to auto-merge pending improve/* PRs each cycle (requires WilowForClaude-itagents)
 ```
 
 Also create `IMPROVE_CONFIG.example.md` with the exact same content. The real IMPROVE_CONFIG.md is gitignored (machine-local schedule + timestamps); the .example.md placeholder IS committed, so collaborators who clone the repo get the defaults — /improve copies it to IMPROVE_CONFIG.md automatically on first run.
@@ -636,7 +636,7 @@ Tasks the Builder has completed and committed, awaiting the multi-agent review p
 EOF
 ````
 
-If `ITAGENTS_AVAILABLE=0`, skip this step — the project runs in solo mode (no review pipeline). The user can install WillowForClaude-itagents later and re-run /autonomy to retrofit.
+If `ITAGENTS_AVAILABLE=0`, skip this step — the project runs in solo mode (no review pipeline). The user can install WilowForClaude-itagents later and re-run /autonomy to retrofit.
 
 ### Step 8: Initial commit and create private GitHub repo
 

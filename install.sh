@@ -1,6 +1,6 @@
 #!/bin/bash
 # install.sh — Install autonomous Claude Code skills
-# Remote install: curl -fsSL https://raw.githubusercontent.com/fransanda/WillowForClaude-skills/main/install.sh | bash
+# Remote install: curl -fsSL https://raw.githubusercontent.com/fransanda/WilowForClaude-skills/main/install.sh | bash
 # Local install:  ./install.sh (from inside a cloned repo)
 
 set -e
@@ -17,10 +17,10 @@ else
         echo "Error: git is required to install. Install git first."
         exit 1
     fi
-    TEMP_CLONE="$(mktemp -d)/WillowForClaude-skills"
+    TEMP_CLONE="$(mktemp -d)/WilowForClaude-skills"
     trap '[ -n "$TEMP_CLONE" ] && rm -rf "$(dirname "$TEMP_CLONE")"' EXIT
     echo "Fetching skills..."
-    git clone --depth=1 --quiet https://github.com/fransanda/WillowForClaude-skills.git "$TEMP_CLONE"
+    git clone --depth=1 --quiet https://github.com/fransanda/WilowForClaude-skills.git "$TEMP_CLONE"
     SOURCE_ROOT="$TEMP_CLONE"
 fi
 

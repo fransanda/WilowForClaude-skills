@@ -454,7 +454,7 @@ done
 If `/mergeprs` is not installed:
 ```
 Note: Auto-merge is enabled but /mergeprs skill is not installed.
-Install WillowForClaude-itagents to enable autonomous PR merging.
+Install WilowForClaude-itagents to enable autonomous PR merging.
 Skipping auto-merge.
 ```
 And continue to Phase 6.

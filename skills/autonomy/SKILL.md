@@ -1,6 +1,6 @@
 ---
 name: autonomy
-description: "Add autonomous development to an existing project. Scans the codebase, checks required tooling (CLI/API/MCP), creates a private GitHub repo if needed, adds autonomous rules to CLAUDE.md, generates BACKLOG.md, PROGRESS.md, LESSONS.md, VISION.md, WIREFRAME.yaml (the UI source of truth), and BRAND.md + DESIGN.md (the design source of truth, reverse-engineered from the codebase), optionally activates the multi-agent QA pipeline (if WillowForClaude-itagents is installed), then starts working continuously. Use with: /autonomy"
+description: "Add autonomous development to an existing project. Scans the codebase, checks required tooling (CLI/API/MCP), creates a private GitHub repo if needed, adds autonomous rules to CLAUDE.md, generates BACKLOG.md, PROGRESS.md, LESSONS.md, VISION.md, WIREFRAME.yaml (the UI source of truth), and BRAND.md + DESIGN.md (the design source of truth, reverse-engineered from the codebase), optionally activates the multi-agent QA pipeline (if WilowForClaude-itagents is installed), then starts working continuously. Use with: /autonomy"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ---
 
@@ -11,7 +11,7 @@ You are adding autonomous development capabilities to an EXISTING project.
 Read the entire codebase structure. If a CLAUDE.md already exists, read it.
 Understand: the tech stack, architecture, current state, what's built, what's missing.
 
-## Step 2: Detect if WillowForClaude-itagents is installed
+## Step 2: Detect if WilowForClaude-itagents is installed
 
 Silently check whether the companion repo's agent templates are available:
 
@@ -194,7 +194,7 @@ You are NOT required to use these — pick the best tool for the job — but the
 If `ITAGENTS_AVAILABLE=1`, append this before the `---` separator:
 
 ```
-### 🤖 MULTI-AGENT QA PIPELINE (WillowForClaude-itagents installed)
+### 🤖 MULTI-AGENT QA PIPELINE (WilowForClaude-itagents installed)
 This project uses /itagentsreview for multi-agent code review. After Builder completes a task, it goes to REVIEW_QUEUE.md instead of straight to PROGRESS.md. The Coordinator orchestrates Code Reviewer, Bug Finder, Security Analyzer, Performance Optimizer, Dependency Auditor, Tester, and Task Checker before allowing it into PROGRESS.md.
 
 When building, you ARE the Builder agent. Read .agents/builder.md for your role.
@@ -495,7 +495,7 @@ IMPROVE_CONFIG.md (if not exists):
 - Edit this file to change the schedule, or pass arguments: /improve fixes every 12h improvements every 3d
 - Delete the "Last Run" timestamps to force an immediate scan
 - Models: change any line above to use a different model (opus, sonnet, haiku, or any future model name)
-- Set "Auto-merge after /improve: yes" to auto-merge pending improve/* PRs each cycle (requires WillowForClaude-itagents)
+- Set "Auto-merge after /improve: yes" to auto-merge pending improve/* PRs each cycle (requires WilowForClaude-itagents)
 ```
 
 Also create `IMPROVE_CONFIG.example.md` (if not exists) with the exact same content. The real IMPROVE_CONFIG.md is gitignored (machine-local schedule + timestamps); the .example.md placeholder IS committed, so collaborators who clone the repo get the defaults — /improve copies it to IMPROVE_CONFIG.md automatically on first run.

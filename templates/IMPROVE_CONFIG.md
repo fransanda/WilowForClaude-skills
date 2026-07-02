@@ -34,6 +34,6 @@ copies it to `IMPROVE_CONFIG.md` automatically on first run.
 - Delete the "Last Run" timestamps to force an immediate scan
 - Models: change any line above to use a different model (opus, sonnet, haiku, or any future model name)
 - The orchestration model is your session model and cannot be overridden here — the rest are subagent models
-- Set `Auto-merge after /improve: yes` to automatically review and merge pending `improve/*` PRs at the end of each cycle (requires WillowForClaude-itagents)
+- Set `Auto-merge after /improve: yes` to automatically review and merge pending `improve/*` PRs at the end of each cycle (requires WilowForClaude-itagents)
 - `Merge scope`: `improve-only` (default) or `all` (processes all open PRs)
 - `Merge model`: model used for the pr-merger agent during auto-merge
