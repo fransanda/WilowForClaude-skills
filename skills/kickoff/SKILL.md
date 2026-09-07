@@ -168,6 +168,7 @@ You are an autonomous developer. Work continuously without human interaction.
 - ALWAYS commit with conventional commits after each task
 - ALWAYS keep working until BACKLOG.md is fully complete
 - ALWAYS read LESSONS.md at session start to apply prior learnings
+- **Company OS (2026-09-07):** this project is a company and its repository is the source of truth for how it operates. Wilow created the skeleton (`company/`, `systems/`, `processes/`, `decisions/`, `changes/`, `standards/`, `agents/`, `governance/`). READ `agents/AGENTS.md` (the agent contract) and `company/profile.md` at session start and OBEY the contract. Two rules matter every day: (1) **every task that changes the repository ends with a change record** at `changes/<YYYY-MM-DD>-<slug>/CONTEXT.md` — front matter (`id`, `author`, `domains`, `pr` when there is one), then `## Intent`, `## What changed`, `## Decisions`, `## Open questions`, `## Conversation` (`Digest:` a summary of the conversation that led here, then `Decisive quotes:` at most THREE short `> quote — who, when` blocks) — never the transcript; commit it WITH the change and add a line to `changes/INDEX.md` (newest first: `- [<id>](<id>/CONTEXT.md) — <intent> (<author>)`); (2) **keep the manifests true**: when you connect, replace or reconfigure a tool, update `systems/<tool>/component.yaml` (purpose, environments, secret REFERENCES — never values) in the same change, and write a `decisions/<YYYY-MM-DD>-<slug>.md` (Status / Context / Decision / Consequences) when architecture, a provider, a process, an offer or governance changes. A pull request without a valid change record is held by the merger.
 - ALWAYS check for PAUSE.md before starting work — if it exists, stop and wait
 
 ### ONLY stop if:
@@ -236,6 +237,21 @@ Generate a detailed BACKLOG.md with checkboxed tasks organized by priority:
 - Ongoing: Bug fixes, test coverage, code quality, dependency updates
 
 Aim for 30-60 specific, actionable tasks.
+
+### Step 4c: Fill the Company OS profile (the skeleton already exists)
+
+Wilow created the Company OS skeleton before this run. Now make it true from the discovery answers:
+1. `company/profile.md` — replace every "(fill in)": what the company does and for whom, how it
+   makes money, the stage, the owner. Keep it to one page.
+2. `company/offers/<slug>.md` — one file per product or service the company sells (from the
+   vision/workflow answers): what it is, who it is for, price or terms, how it is delivered.
+3. `systems/<tool>/component.yaml` — for every tool this project will use, fill `purpose:`; add a
+   manifest for any tool the skeleton missed. Secrets stay REFERENCES (`ref:`), never values.
+4. `processes/` — one file per workflow the discovery described (trigger → steps → owner group →
+   systems → done).
+5. `decisions/<YYYY-MM-DD>-kickoff.md` — the founding decision record: what was decided at kickoff
+   and why (stack, providers, scope).
+Commit these with the scaffold. They are read by every future session and by every collaborator.
 
 ### Step 5: Create PROGRESS.md and LESSONS.md
 

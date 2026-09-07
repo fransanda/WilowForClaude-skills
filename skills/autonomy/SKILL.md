@@ -155,6 +155,7 @@ You are an autonomous developer. Work continuously without human interaction.
 - ALWAYS commit with conventional commits after each task
 - ALWAYS keep working until BACKLOG.md is fully complete
 - ALWAYS read LESSONS.md at session start to apply prior learnings
+- **Company OS (2026-09-07):** this project is a company and its repository is the source of truth for how it operates. Wilow created the skeleton (`company/`, `systems/`, `processes/`, `decisions/`, `changes/`, `standards/`, `agents/`, `governance/`). READ `agents/AGENTS.md` (the agent contract) and `company/profile.md` at session start and OBEY the contract. Two rules matter every day: (1) **every task that changes the repository ends with a change record** at `changes/<YYYY-MM-DD>-<slug>/CONTEXT.md` — front matter (`id`, `author`, `domains`, `pr` when there is one), then `## Intent`, `## What changed`, `## Decisions`, `## Open questions`, `## Conversation` (`Digest:` a summary of the conversation that led here, then `Decisive quotes:` at most THREE short `> quote — who, when` blocks) — never the transcript; commit it WITH the change and add a line to `changes/INDEX.md` (newest first: `- [<id>](<id>/CONTEXT.md) — <intent> (<author>)`); (2) **keep the manifests true**: when you connect, replace or reconfigure a tool, update `systems/<tool>/component.yaml` (purpose, environments, secret REFERENCES — never values) in the same change, and write a `decisions/<YYYY-MM-DD>-<slug>.md` (Status / Context / Decision / Consequences) when architecture, a provider, a process, an offer or governance changes. A pull request without a valid change record is held by the merger.
 - ALWAYS check for PAUSE.md before starting work — if it exists, stop and wait
 
 ### ONLY stop if:
@@ -250,6 +251,21 @@ fi
 ```
 
 If `ITAGENTS_AVAILABLE=0`, skip this step. The project runs in solo mode.
+
+### Step 6a: Adopt the Company OS (the skeleton already exists — make it true)
+
+Wilow created the Company OS skeleton (`company/`, `systems/`, `governance/`, `agents/`, …)
+ADDITIVELY — nothing was moved or deleted. From what you learned scanning the codebase:
+1. Fill `company/profile.md` (what this company does, for whom, stage, owner). One page.
+2. Fill `purpose:` in every `systems/<tool>/component.yaml`; add manifests for tools the code uses
+   that the skeleton missed (secrets as `ref:` only).
+3. Write `decisions/<YYYY-MM-DD>-adopt-company-os.md`: Status / Context / Decision / Consequences —
+   the project now follows the Company OS contract in `agents/AGENTS.md`.
+4. If `governance/ownership.yaml` misses a top-level folder this repo already has, add it to the
+   right group (product for code, company for documents) — the merger holds changes that create
+   unowned folders.
+5. Write the first change record `changes/<YYYY-MM-DD>-adopt-company-os/CONTEXT.md` and the
+   `changes/INDEX.md` line, and commit everything as ONE commit: `chore: adopt Company OS`.
 
 ### Step 6b: Create VISION.md (if not exists)
 
